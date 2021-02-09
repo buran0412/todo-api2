@@ -10,42 +10,29 @@ class TodosController extends Controller
 
     public function index()
     {
-        $todos = Todo::all();
+        $item = Todo::all();
         return response()->json([
             'message' => 'OK',
-            'data' => $todos
+            'data' => $item
         ], 200);
     }
     public function store(Request $request)
     {
-        $todos = new Todo();
-        $todos->body = $request->body;
-        $todos->save();
+        $item = new Todo();
+        $item->body = $request->body;
+        $item->save();
         return response()->json([
             'message' => 'Created successfully',
-            'data' => $todos
+            'data' => $item
         ], 200);
     }
     public function show(Todo $todos)
     {
-        $todos = Todo::where('id', $todos->id)->first();
-        if ($todos) {
+        $item = Todo::where('id', $todos->id)->first();
+        if ($item) {
             return response()->json([
                 'message' => 'OK',
-                'data' => $todos
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => 'Not found',
-            ], 404);
-        }
-    }
-    public function destroy(Todo $todos)
-    {
-        $todos = Todo::where('id', $todos->id)->delete();
-        if ($todos) {
-            return response()->json([
-                'message' => 'Deleted successfully',
+                'data' => $item
             ], 200);
         } else {
             return response()->json([
@@ -55,16 +42,34 @@ class TodosController extends Controller
     }
     public function update(Request $request, Todo $todos)
     {
-        $todos = Todo::where('id', $todos->id)->first();
-        $todos->name = $request->name;
-        $todos->save();
-        if ($todos) {
+        $item = Todo::where('id', $todos->id)->first();
+        $item->name = $request->name;
+        $item->save();
+        if ($item) {
             return response()->json([
                 'message' => 'Updated successfully',
             ], 200);
         } else {
             return response()->json([
                 'message' => 'Not found',
+            ], 404);
+        }
+    }
+    public function destroy(Todo $todos)
+    {
+        $item = Todo::where('id', $todos->id)->delete();
+        if ($item) {
+            return response()->json([
+                'message' => 'Deleted successfully',
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Not found',
+            ], 404);
+        }
+    }
+}
+
             ], 404);
         }
     }
