@@ -11,28 +11,61 @@ class TodosController extends Controller
     public function index()
     {
         $todos = Todo::all();
-        return redirect('/');
+        return response()->json([
+            'message' => 'OK',
+            'data' => $todos
+        ], 200);
     }
     public function store(Request $request)
     {
         $todos = new Todo();
         $todos->body = $request->body;
         $todos->save();
-        return redirect('/');
+        return response()->json([
+            'message' => 'Created successfully',
+            'data' => $todos
+        ], 200);
     }
-    public function destroy(todo $todos)
+    public function show(Todo $todos)
     {
-        $todos->delete();
-        return redirect('/');
+        $todos = Todo::where('id', $todos->id)->first();
+        if ($todos) {
+            return response()->json([
+                'message' => 'OK',
+                'data' => $todos
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Not found',
+            ], 404);
+        }
     }
-    public function edit(todo $todos)
+    public function destroy(Todo $todos)
     {
-        return redirect('/');
+        $todos = Todo::where('id', $todos->id)->delete();
+        if ($todos) {
+            return response()->json([
+                'message' => 'Deleted successfully',
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Not found',
+            ], 404);
+        }
     }
-    public function update(Request $request, todo $todos)
+    public function update(Request $request, Todo $todos)
     {
-        $todos->body = $request->body;
+        $todos = Todo::where('id', $todos->id)->first();
+        $todos->name = $request->name;
         $todos->save();
-        return redirect('/');
+        if ($todos) {
+            return response()->json([
+                'message' => 'Updated successfully',
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Not found',
+            ], 404);
+        }
     }
 }
