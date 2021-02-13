@@ -42,8 +42,8 @@ class TodosController extends Controller
     }
     public function update(Request $request, Todo $todos)
     {
-        $item = Todo::where('id', $todos->id)->first();
-        $item->name = $request->name;
+        $item = Todo::where('id', $todos->id)->update($todos);
+        return redirect('/');
         $item->save();
         if ($item) {
             return response()->json([
@@ -65,11 +65,6 @@ class TodosController extends Controller
         } else {
             return response()->json([
                 'message' => 'Not found',
-            ], 404);
-        }
-    }
-}
-
             ], 404);
         }
     }
