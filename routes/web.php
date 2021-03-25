@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TodosController;
+
+Route::get('/', [TodosController::class, 'index']);
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +17,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', 'TodosController@index');
+Route::get('/', 'App\Http\Controllers\TodosController@index');
 Route::resource('todos', 'TodosController');
